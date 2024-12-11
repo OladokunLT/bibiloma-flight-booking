@@ -11,7 +11,7 @@ document
       destination: document.getElementById("destination").value,
       departureDate: document.getElementById("departureDate").value,
       returnDate: document.getElementById("returnDate").value,
-      price: document.getElementById("price").value,
+      price: parseFloat(document.getElementById("price").value),
     };
 
     const apiEndpoint = "https://bibilomo-project.onrender.com/flight/package";
