@@ -9,8 +9,8 @@ document
       name: document.getElementById("nameOfPackage").value,
       origin: document.getElementById("departure").value,
       destination: document.getElementById("destination").value,
-      departure_date: document.getElementById("departureDate").value,
-      return_date: document.getElementById("returnDate").value,
+      departureDate: document.getElementById("departureDate").value,
+      returnDate: document.getElementById("returnDate").value,
       price: document.getElementById("price").value,
     };
 
