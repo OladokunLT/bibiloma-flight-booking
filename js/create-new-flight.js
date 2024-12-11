@@ -3,16 +3,39 @@ document
   .addEventListener("submit", async function (e) {
     e.preventDefault();
 
+    // Format dates to YYYY-MM-DD
+    const departureDate = new Date(
+      document.getElementById("departureDate").value
+    )
+      .toISOString()
+      .split("T")[0];
+    const returnDate = new Date(document.getElementById("returnDate").value)
+      .toISOString()
+      .split("T")[0];
+    console.log(departureDate);
+
     // Collect form data into an object
     const formData = {
       airline: document.getElementById("airline").value,
       name: document.getElementById("nameOfPackage").value,
       origin: document.getElementById("departure").value,
       destination: document.getElementById("destination").value,
-      departureDate: document.getElementById("departureDate").value,
-      returnDate: document.getElementById("returnDate").value,
+      departure_date: departureDate,
+      return_date: returnDate,
       price: parseFloat(document.getElementById("price").value),
     };
+
+    // Validate data
+    if (
+      !formData.airline ||
+      !formData.name ||
+      !formData.origin ||
+      !formData.destination ||
+      isNaN(formData.price)
+    ) {
+      alert("Please fill out all required fields correctly.");
+      return;
+    }
 
     const apiEndpoint = "https://bibilomo-project.onrender.com/flight/package";
 
@@ -24,17 +47,18 @@ document
         },
         body: JSON.stringify(formData),
       });
+      console.log(formData);
 
       if (response.ok) {
         const result = await response.json();
         console.log(result);
-        alert("Package booked successfully!");
+        alert("Package created successfully!");
       } else {
         const error = await response.json();
+        console.error("Server error details:", error); // Log server error details
         alert(`Error: ${error.message}`);
       }
     } catch (err) {
       alert(`Failed to connect to the server: ${err.message}`);
     }
   });
-
