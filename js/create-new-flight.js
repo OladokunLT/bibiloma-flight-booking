@@ -12,7 +12,6 @@ document
     const returnDate = new Date(document.getElementById("returnDate").value)
       .toISOString()
       .split("T")[0];
-    console.log(departureDate);
 
     // Collect form data into an object
     const formData = {
@@ -40,23 +39,38 @@ document
     const apiEndpoint =
       "https://bibilomo-project.onrender.com/api/flight/package/";
 
+    // Get token from localStorage
+    const accessToken = localStorage.getItem("access_token");
+
+    if (!accessToken) {
+      alert("You are not logged in. Please log in and try again.");
+      window.location.href = "index.html"; // Redirect to login page
+      return;
+    }
+
     try {
       const response = await fetch(apiEndpoint, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`, // Add Authorization header
         },
         body: JSON.stringify(formData),
       });
-      console.log(formData);
 
       if (response.ok) {
         const result = await response.json();
         console.log(result);
         alert("Package created successfully!");
+      } else if (response.status === 401) {
+        alert(
+          "Unauthorized! Your session might have expired. Please log in again."
+        );
+        localStorage.removeItem("access_token"); // Clear token
+        window.location.href = "index.html"; // Redirect to login page
       } else {
         const error = await response.json();
-        console.error("Server error details:", error); // Log server error details
+        console.error("Server error details:", error);
         alert(`Error: ${error.message}`);
       }
     } catch (err) {
