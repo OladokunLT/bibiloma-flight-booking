@@ -1,45 +1,79 @@
-document.addEventListener("DOMContentLoaded", async () => {
-  const BASE_API_URL = "https://bibilomo-project.onrender.com";
-  const flightPackagesContainer = document.getElementById("flightPackages");
+document
+  .getElementById("bookingForm")
+  .addEventListener("submit", async function (e) {
+    e.preventDefault();
 
-  try {
-    const response = await fetch(`${BASE_API_URL}/flight/packages`);
+    // Format dates to YYYY-MM-DD
+    const departureDate = new Date(
+      document.getElementById("departureDate").value
+    )
+      .toISOString()
+      .split("T")[0];
+    const returnDate = new Date(document.getElementById("returnDate").value)
+      .toISOString()
+      .split("T")[0];
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch flight packages");
-    }
+    // Collect form data into an object
+    const formData = {
+      airline: document.getElementById("airline").value,
+      name: document.getElementById("nameOfPackage").value,
+      origin: document.getElementById("departure").value,
+      destination: document.getElementById("destination").value,
+      departure_date: departureDate,
+      return_date: returnDate,
+      price: parseFloat(document.getElementById("price").value),
+    };
 
-    const packages = await response.json();
-    console.log(packages);
-
-    if (packages.length === 0) {
-      flightPackagesContainer.innerHTML =
-        "<p>No flight packages available at the moment.</p>";
+    // Validate data
+    if (
+      !formData.airline ||
+      !formData.name ||
+      !formData.origin ||
+      !formData.destination ||
+      isNaN(formData.price)
+    ) {
+      alert("Please fill out all required fields correctly.");
       return;
     }
 
-    packages.forEach((pkg) => {
-      const card = document.createElement("div");
-      card.className = "package-card";
-      card.innerHTML = `
-              <h3>${pkg.name}</h3>
-              <p><strong>Airline:</strong> ${pkg.airline}</p>
-              <p><strong>Origin:</strong> ${pkg.origin}</p>
-              <p><strong>Destination:</strong> ${pkg.destination}</p>
-              <p><strong>Departure:</strong> ${new Date(
-                pkg.departureDate
-              ).toLocaleDateString()}</p>
-              <p><strong>Return:</strong> ${
-                pkg.returnDate
-                  ? new Date(pkg.returnDate).toLocaleDateString()
-                  : "One-way"
-              }</p>
-              <p class="price"><strong>Price:</strong> $${pkg.price}</p>
-          `;
-      flightPackagesContainer.appendChild(card);
-    });
-  } catch (error) {
-    flightPackagesContainer.innerHTML = `<p>Error: ${error.message}</p>`;
-    console.log("Error", error);
-  }
-});
+    const apiEndpoint =
+      "https://bibilomo-project.onrender.com/api/flight/package/";
+
+    // Get token from localStorage
+    const accessToken = localStorage.getItem("access_token");
+
+    if (!accessToken) {
+      alert("You are not logged in. Please log in and try again.");
+      window.location.href = "index.html"; // Redirect to login page
+      return;
+    }
+
+    try {
+      const response = await fetch(apiEndpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`, // Add Authorization header
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log(result);
+        alert("Package created successfully!");
+      } else if (response.status === 401) {
+        alert(
+          "Unauthorized! Your session might have expired. Please log in again."
+        );
+        localStorage.removeItem("access_token"); // Clear token
+        window.location.href = "index.html"; // Redirect to login page
+      } else {
+        const error = await response.json();
+        console.error("Server error details:", error);
+        alert(`Error: ${error.message}`);
+      }
+    } catch (err) {
+      alert(`Failed to connect to the server: ${err.message}`);
+    }
+  });

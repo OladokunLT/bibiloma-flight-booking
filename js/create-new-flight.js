@@ -37,7 +37,8 @@ document
       return;
     }
 
-    const apiEndpoint = "https://bibilomo-project.onrender.com/flight/package";
+    const apiEndpoint =
+      "https://bibilomo-project.onrender.com/api/flight/package/";
 
     try {
       const response = await fetch(apiEndpoint, {
