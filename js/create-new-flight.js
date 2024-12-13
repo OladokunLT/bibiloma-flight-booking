@@ -1,3 +1,6 @@
+document.getElementById("goToDashboard").addEventListener("click", () => {
+  window.location.href = "/admin-dashboard.html";
+});
 document
   .getElementById("bookingForm")
   .addEventListener("submit", async function (e) {

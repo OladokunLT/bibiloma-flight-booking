@@ -4,11 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./css/create-new-flight.css" />
-    <title>Flight Booking</title>
+    <title>Create flight package</title>
   </head>
   <body>
     <div class="booking-container">
-      <h2>Book Your Flight</h2>
+      <header>
+        <button id="goToDashboard" class="btn">Back to Dashboard</button>
+      </header>
+      <h2>Create Flight Package</h2>
       <form id="bookingForm">
         <div class="form-group">
           <label for="name-of-package">Name of package:</label>
@@ -68,32 +71,8 @@
             required
           />
         </div>
-
-        <!-- <div class="form-group">
-          <label for="passengers">Passengers:</label>
-          <input
-            type="number"
-            id="passengers"
-            name="passengers"
-            min="1"
-            value="1"
-            required
-        </div>/> -->
-        <!-- <div class="form-group">
-          <label for="locationImage">Upload Location Background:</label>
-          <input
-            type="file"
-            id="locationImage"
-            name="locationImage"
-            accept="image/*"
-          />
-        </div> -->
-        <!-- <div class="image-preview" id="imagePreview">
-          <p>No image selected</p>
-        </div> -->
         <button type="submit">Create Flight</button>
       </form>
-      <div id="results" class="results"></div>
     </div>
     <script src="js/create-new-flight.js"></script>
   </body>

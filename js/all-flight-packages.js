@@ -44,3 +44,18 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 });
 
+// logout admin functionality
+document.getElementById("logout-link").addEventListener("click", (event) => {
+  event.preventDefault(); // Prevent default navigation behavior
+
+  // Clear tokens from localStorage
+  localStorage.removeItem("access_token");
+  localStorage.removeItem("refresh_token");
+
+  // Verify tokens are removed
+  console.log("Access Token:", localStorage.getItem("access_token"));
+  console.log("Refresh Token:", localStorage.getItem("refresh_token"));
+
+  // Redirect to the login page
+  window.location.href = "index.html";
+});
