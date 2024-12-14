@@ -1,10 +1,12 @@
 document.getElementById("goToDashboard").addEventListener("click", () => {
   window.location.href = "/admin-dashboard.html";
 });
+
 document
   .getElementById("bookingForm")
   .addEventListener("submit", async function (e) {
     e.preventDefault();
+    const BASE_API_URL = "https://bibilomo-project.onrender.com"
 
     // Format dates to YYYY-MM-DD
     const departureDate = new Date(
@@ -39,9 +41,6 @@ document
       return;
     }
 
-    const apiEndpoint =
-      "https://bibilomo-project.onrender.com/api/flight/package/";
-
     // Get token from localStorage
     const accessToken = localStorage.getItem("access_token");
 
@@ -52,7 +51,7 @@ document
     }
 
     try {
-      const response = await fetch(apiEndpoint, {
+      const response = await fetch(`${BASE_API_URL}/api/flight/package/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -74,7 +73,7 @@ document
       } else {
         const error = await response.json();
         console.error("Server error details:", error);
-        alert(`Error: ${error.message}`);
+        alert(`Error: ${error.message || "Failed to create package"}`);
       }
     } catch (err) {
       alert(`Failed to connect to the server: ${err.message}`);

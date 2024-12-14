@@ -6623,6 +6623,35 @@ body {
   text-align: center;
 }
 
+.package-card .btn-edit,
+.package-card .btn-delete {
+  margin-top: 10px;
+  padding: 10px 2rem;
+  /* width: 48%; */
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.package-card .btn-edit {
+  background-color: #28a745;
+  color: white;
+}
+
+.package-card .btn-edit:hover {
+  background-color: #218838;
+}
+
+.package-card .btn-delete {
+  background-color: #dc3545;
+  color: white;
+}
+
+.package-card .btn-delete:hover {
+  background-color: #c82333;
+}
+
 /*========= package-card-active =========*/
 .package-card-active {
   -webkit-transform: scale(1.1);
