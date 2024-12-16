@@ -91,7 +91,8 @@
   </head>
   <body>
     <div class="form-container" id="form-container">
-      <h1 id="form-title">Register</h1>
+      <!-- <h1 id="form-title">Register</h1> -->
+      <h1 id="form-title">Login</h1>
 
       <form id="auth-form">
         <div class="form-group">
@@ -99,26 +100,14 @@
           <input type="text" id="username" name="username" required />
         </div>
         <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" name="email" />
-        </div>
-        <div class="form-group">
-          <label for="first-name">First Name</label>
-          <input type="text" id="first-name" name="first_name" />
-        </div>
-        <div class="form-group">
-          <label for="last-name">Last Name</label>
-          <input type="text" id="last-name" name="last_name" />
-        </div>
-        <div class="form-group">
           <label for="password">Password</label>
           <input type="password" id="password" name="password" required />
         </div>
-        <button type="submit" class="btn" id="submit-btn">Register</button>
+        <button type="submit" class="btn" id="submit-btn">Login</button>
       </form>
 
       <span class="toggle-link" id="toggle-link"
-        >Already have an account? Login</span
+        >Don't have an account? Register</span
       >
       <div class="error-message" id="error-message"></div>
     </div>
@@ -130,12 +119,13 @@
       const formTitle = document.getElementById("form-title");
       const toggleLink = document.getElementById("toggle-link");
       const errorMessage = document.getElementById("error-message");
+      const submitBtn = document.getElementById("submit-btn");
 
       let isLoginMode = false;
 
       toggleLink.addEventListener("click", () => {
         isLoginMode = !isLoginMode;
-        if (isLoginMode) {
+        if (!isLoginMode) {
           formTitle.textContent = "Login";
           toggleLink.textContent = "Don't have an account? Register";
           authForm.innerHTML = `
@@ -184,8 +174,8 @@
 
         const formData = new FormData(authForm);
         const data = Object.fromEntries(formData.entries());
-
-        const endpoint = isLoginMode
+        submitBtn.textContent = "Loading...";
+        const endpoint = !isLoginMode
           ? "/api/admin/login/"
           : "/api/admin/register";
 
@@ -206,7 +196,7 @@
           const result = await response.json();
           console.log("Success:", result);
 
-          if (isLoginMode) {
+          if (!isLoginMode) {
             // Store tokens securely
             localStorage.setItem("access_token", result.access_token);
             localStorage.setItem("refresh_token", result.refresh_token);
@@ -220,6 +210,7 @@
         } catch (error) {
           console.error("Error:", error);
           errorMessage.textContent = error.message;
+          submitBtn.textContent = !isLoginMode ? "Login" : "Register";
         }
       });
     </script>
