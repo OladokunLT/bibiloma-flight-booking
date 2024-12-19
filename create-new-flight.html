@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./css/create-new-flight.css" />
-    <title>Create flight package</title>
+    <title>Create Flight Package</title>
   </head>
   <body>
     <div class="booking-container">
@@ -14,12 +14,52 @@
       <h2>Create Flight Package</h2>
       <form id="bookingForm">
         <div class="form-group">
-          <label for="name-of-package">Name of package:</label>
+          <label for="imageUpload">Upload Package Image:</label>
+          <input type="file" id="imageUpload" accept="image/*" />
+          <div class="image-preview" id="imagePreview">
+            <p>Preview will appear here</p>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Flight Mode:</label>
+          <div>
+            <input type="radio" id="oneWay" name="flightMode" value="one_way" />
+            <label for="oneWay">One-way</label>
+          </div>
+          <div>
+            <input
+              type="radio"
+              id="roundTrip"
+              name="flightMode"
+              value="round_trip"
+            />
+            <label for="roundTrip">Round-trip</label>
+          </div>
+          <div>
+            <input
+              type="radio"
+              id="multiCity"
+              name="flightMode"
+              value="multi_city"
+            />
+            <label for="multiCity">Multi-city</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="flightClass">Flight Class:</label>
+          <select id="flightClass" name="flightClass">
+            <option value="economy">economy</option>
+            <option value="business">business</option>
+            <option value="first_class">first Class</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="nameOfPackage">Name of Package:</label>
           <input
             type="text"
             id="nameOfPackage"
             name="nameOfPackage"
-            placeholder="e.g vacation package"
+            placeholder="e.g., Vacation Package"
             required
           />
         </div>
@@ -29,7 +69,7 @@
             type="text"
             id="airline"
             name="airline"
-            placeholder="Enter Airline name"
+            placeholder="Enter airline name"
             required
           />
         </div>
@@ -64,7 +104,7 @@
         <div class="form-group">
           <label for="price">Price:</label>
           <input
-            type="number"
+            type="text"
             id="price"
             name="price"
             placeholder="Enter price"

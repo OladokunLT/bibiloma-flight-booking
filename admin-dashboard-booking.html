@@ -1033,6 +1033,47 @@
     </div>
     <!-- end modal-popup -->
 
+    <!-- Edit-package modal -->
+    <div id="editPackageModal" class="modal">
+      <div class="modal-content">
+        <span class="close" id="closeModal">&times;</span>
+        <h2>Edit Package</h2>
+        <form id="editPackageForm">
+          <div class="form-group">
+            <label for="editName">Name:</label>
+            <input type="text" id="editName" name="name" required />
+          </div>
+          <div class="form-group">
+            <label for="editAirline">Airline:</label>
+            <input type="text" id="editAirline" name="airline" required />
+          </div>
+          <div class="form-group">
+            <label for="editOrigin">Origin:</label>
+            <input type="text" id="editOrigin" name="origin" required />
+          </div>
+          <div class="form-group">
+            <label for="editDestination">Destination:</label>
+            <input type="text" id="editDestination" name="destination" required />
+          </div>
+          <div class="form-group">
+            <label for="editDepartureDate">Departure Date:</label>
+            <input type="date" id="editDepartureDate" name="departure_date" required />
+          </div>
+          <div class="form-group">
+            <label for="editReturnDate">Return Date:</label>
+            <input type="date" id="editReturnDate" name="return_date" />
+          </div>
+          <div class="form-group">
+            <label for="editPrice">Price:</label>
+            <input type="number" id="editPrice" name="price" required />
+          </div>
+          <button type="submit">Update Package</button>
+        </form>
+      </div>
+    </div>
+    
+    <!-- End of Edit-package modal -->
+
     <!-- Template JS Files -->
     <script src="js/jquery-3.7.1.min.js"></script>
     <script src="js/jquery-ui.js"></script>
