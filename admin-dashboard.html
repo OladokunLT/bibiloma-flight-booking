@@ -541,7 +541,7 @@
                           aria-expanded="false"
                         >
                           <i class="la la-bell"></i>
-                          <span class="noti-count">4</span>
+                          <span class="noti-count" id="bookingTotalCount">4</span>
                         </a>
                         <div
                           class="dropdown-menu dropdown-reveal dropdown-menu-xl dropdown-menu-right"
@@ -652,7 +652,7 @@
                           aria-expanded="false"
                         >
                           <i class="la la-envelope"></i>
-                          <span class="noti-count">4</span>
+                          <span class="noti-count" id="contactRecentCount">4</span>
                         </a>
                         <div
                           class="dropdown-menu dropdown-reveal dropdown-menu-xl dropdown-menu-right"
@@ -911,8 +911,8 @@
                 <div class="icon-box icon-layout-2 dashboard-icon-box pb-0">
                   <div class="d-flex pb-3 justify-content-between">
                     <div class="info-content">
-                      <p class="info__desc">Recent No. of Tours</p>
-                      <h4 class="info__title">5</h4>
+                      <p class="info__desc">Total No. of flight package</p>
+                      <h4 class="info__title" id="packageTotalCount">5</h4>
                     </div>
                     <!-- end info-content -->
                     <div class="info-icon icon-element bg-4">
@@ -928,6 +928,51 @@
                   ></a>
                 </div>
               </div>
+              <div class="col-lg-3 responsive-column-l">
+                <div class="icon-box icon-layout-2 dashboard-icon-box pb-0">
+                  <div class="d-flex pb-3 justify-content-between">
+                    <div class="info-content">
+                      <p class="info__desc">Total No. of contact messages</p>
+                      <h4 class="info__title" id="contactTotalCount">5</h4>
+                    </div>
+                    <!-- end info-content -->
+                    <div class="info-icon icon-element bg-4">
+                      <i class="la la-bookmark-o"></i>
+                    </div>
+                    <!-- end info-icon-->
+                  </div>
+                  <div class="section-block"></div>
+                  <a
+                    href="contact-message.html"
+                    class="d-flex align-items-center justify-content-between view-all"
+                    >View All <i class="la la-angle-right"></i
+                  ></a>
+                </div>
+              </div>
+              <div class="col-lg-3 responsive-column-l">
+                <div class="icon-box icon-layout-2 dashboard-icon-box pb-0">
+                  <div class="d-flex pb-3 justify-content-between">
+                    <div class="info-content">
+                      <p class="info__desc">Total No. of booking applications</p>
+                      <h4 class="info__title" id="bookingTotalCount" >5</h4>
+                    </div>
+                    <!-- end info-content -->
+                    <div class="info-icon icon-element bg-4">
+                      <i class="la la-bookmark-o"></i>
+                    </div>
+                    <!-- end info-icon-->
+                  </div>
+                  <div class="section-block"></div>
+                  <a
+                    href="booking-application.html"
+                    class="d-flex align-items-center justify-content-between view-all"
+                    >View All <i class="la la-angle-right"></i
+                  ></a>
+                </div>
+              </div>
+              
+              <!-- end col-lg-3 -->
+             
               
               <!-- end col-lg-3 -->
             </div>
@@ -1201,11 +1246,11 @@
       <i class="la la-angle-up" title="Go top"></i>
     </div>
     <!-- end scroll top -->
-
+    
     <!-- Template JS Files -->
     <script src="js/jquery-3.7.1.min.js"></script>
     <script src="js/jquery-ui.js"></script>
-
+    
     <script src="js/bootstrap.bundle.min.js"></script>
     <script src="js/select2.min.js"></script>
     <script src="js/moment.min.js"></script>
@@ -1221,8 +1266,10 @@
     <script src="js/bar-chart.js"></script>
     <script src="js/line-chart.js"></script>
     <script src="js/jquery.ripples-min.js"></script>
-    <script src="js/main.js"></script>
     <script src="js/all-flight-packages.js"></script>
+    <script src="js/contact-messages.js"></script>
+    <script src="js/booking-applications.js"></script>
+    <script src="js/main.js"></script>
     <script>
 
     </script>

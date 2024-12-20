@@ -479,7 +479,9 @@
                           aria-expanded="false"
                         >
                           <i class="la la-bell"></i>
-                          <span class="noti-count">4</span>
+                          <span class="noti-count" id="bookingTotalCount"
+                            >4</span
+                          >
                         </a>
                         <div
                           class="dropdown-menu dropdown-reveal dropdown-menu-xl dropdown-menu-right"
@@ -590,7 +592,9 @@
                           aria-expanded="false"
                         >
                           <i class="la la-envelope"></i>
-                          <span class="noti-count">4</span>
+                          <span class="noti-count" id="contactTotalCount"
+                            >4</span
+                          >
                         </a>
                         <div
                           class="dropdown-menu dropdown-reveal dropdown-menu-xl dropdown-menu-right"
@@ -856,7 +860,9 @@
                     <div
                       class="d-flex align-items-center justify-content-between"
                     >
-                      <h3 class="title">Booking Results</h3>
+                      <h3 class="title">
+                        Package Results (<span id="packageTotalCount">5</span>)
+                      </h3>
                       <div class="select-contain select2-container-wrapper">
                         <select class="select-contain-select">
                           <option value="1">Any Status</option>
@@ -870,6 +876,7 @@
                   <div class="form-content pb-2">
                     <div id="flightPackages" class="packages-container">
                       <!-- Flight package cards will be inserted here -->
+                      No package available
                     </div>
                   </div>
                 </div>
@@ -1053,11 +1060,21 @@
           </div>
           <div class="form-group">
             <label for="editDestination">Destination:</label>
-            <input type="text" id="editDestination" name="destination" required />
+            <input
+              type="text"
+              id="editDestination"
+              name="destination"
+              required
+            />
           </div>
           <div class="form-group">
             <label for="editDepartureDate">Departure Date:</label>
-            <input type="date" id="editDepartureDate" name="departure_date" required />
+            <input
+              type="date"
+              id="editDepartureDate"
+              name="departure_date"
+              required
+            />
           </div>
           <div class="form-group">
             <label for="editReturnDate">Return Date:</label>
@@ -1071,7 +1088,7 @@
         </form>
       </div>
     </div>
-    
+
     <!-- End of Edit-package modal -->
 
     <!-- Template JS Files -->
@@ -1088,6 +1105,8 @@
     <script src="js/animated-headline.js"></script>
     <script src="js/jquery.ripples-min.js"></script>
     <script src="js/all-flight-packages.js"></script>
+    <script src="js/contact-messages.js"></script>
+    <script src="js/booking-applications.js"></script>
     <script src="js/main.js"></script>
   </body>
 </html>

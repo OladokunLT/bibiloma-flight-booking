@@ -3,6 +3,9 @@
 document.addEventListener("DOMContentLoaded", async () => {
   const BASE_API_URL = "https://bibilomo-project.onrender.com";
   const flightPackagesContainer = document.getElementById("flightPackages");
+  const packageTotalCount = document.querySelectorAll("#packageTotalCount");
+  console.log(packageTotalCount);
+  const packageRecentCount = document.querySelectorAll("#packageRecentCount");
   const accessToken = localStorage.getItem("access_token");
 
   // Protect dashboard and this page
@@ -63,10 +66,36 @@ document.addEventListener("DOMContentLoaded", async () => {
       `;
       flightPackagesContainer.appendChild(card);
     });
+
+    // fetch package count
+    const packageCountResponse = await fetch(
+      `${BASE_API_URL}/api/flight/packages/count/`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+    if (!response.ok) {
+      throw new Error("Failed to fetch package count");
+    }
+    const { total_count, recent_count } = await packageCountResponse.json();
+    console.log(total_count);
+    console.log(recent_count);
+
+    packageTotalCount.forEach((element) => {
+      element.textContent = total_count;
+    });
+    packageRecentCount.forEach((element) => {
+      element.textContent = recent_count;
+    });
   } catch (error) {
-    flightPackagesContainer.innerHTML = `<p>Error: ${error.message}</p>`;
     console.log("Error", error);
   }
+
+  // catch (error) {
+  //   console.log(error);
+  // }
 });
 
 // Delete package functionality
@@ -78,13 +107,10 @@ async function deletePackage(id) {
   if (!confirmation) return;
 
   try {
-    const response = await fetch(
-      `${BASE_API_URL}/api/flight/package/${id}/delete/`,
-      {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${accessToken}` },
-      }
-    );
+    const response = await fetch(`${BASE_API_URL}/api/flight/packages/${id}/`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
 
     if (response.ok) {
       alert("Package deleted successfully!");
@@ -108,7 +134,7 @@ async function editPackage(id) {
   const accessToken = localStorage.getItem("access_token");
 
   try {
-    const response = await fetch(`${BASE_API_URL}/api/flight/package/${id}`, {
+    const response = await fetch(`${BASE_API_URL}/api/flight/packages/${id}/`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -161,7 +187,7 @@ async function editPackage(id) {
 
       try {
         const updateResponse = await fetch(
-          `${BASE_API_URL}/api/flight/package/${id}/update/`,
+          `${BASE_API_URL}/api/flight/packages/${id}/`,
           {
             method: "PUT",
             headers: {
@@ -200,14 +226,45 @@ window.onclick = (event) => {
   }
 };
 
-// Logout functionality
-document.getElementById("logout-link").addEventListener("click", (event) => {
-  event.preventDefault();
+// // Logout functionality
+// document.querySelectorAll("#logout-link").forEach((element) => {
+//   element.addEventListener("click", (event) => {
+//     event.preventDefault();
 
-  // Clear tokens from localStorage
-  localStorage.removeItem("access_token");
-  localStorage.removeItem("refresh_token");
+//     // Clear tokens from localStorage
+//     localStorage.removeItem(access_token);
+//     localStorage.removeItem(refresh_token);
 
-  // Redirect to login
-  window.location.href = "index.html";
+//     // Redirect to login
+//     window.location.href = "index.html";
+//   });
+// });
+// Enhanced Logout Functionality
+document.querySelectorAll("#logout-link").forEach((element) => {
+  element.addEventListener("click", (event) => {
+    event.preventDefault();
+
+    console.log("Logout initiated");
+
+    try {
+      // Clear tokens from localStorage
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("refresh_token");
+
+      // Verify tokens removed
+      console.log(
+        "Access Token After Logout:",
+        localStorage.getItem("access_token")
+      );
+      console.log(
+        "Refresh Token After Logout:",
+        localStorage.getItem("refresh_token")
+      );
+
+      // Redirect to login
+      window.location.href = "index.html";
+    } catch (error) {
+      console.error("Error during logout:", error);
+    }
+  });
 });

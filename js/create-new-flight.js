@@ -10,7 +10,7 @@ document
 
     // Format dates to YYYY-MM-DD
     const departureDate = new Date(
-      document.getElementById("departureDate").values
+      document.getElementById("departureDate").value
     )
       .toISOString()
       .split("T")[0];
