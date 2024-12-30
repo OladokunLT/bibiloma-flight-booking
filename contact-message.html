@@ -1,29 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contact Messages</title>
-  <link rel="stylesheet" href="css/contact-message.css">
-  <script defer src="js/contact-messages.js"></script>
-</head>
-<body>
-  <header>
-    <h1>Contact Messages</h1>
-  </header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Messages</title>
+    <link rel="stylesheet" href="css/contact-message.css" />
+    <script defer src="js/contact-messages.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>Contact Messages</h1>
+    </header>
 
-  <main>
-    <section>
-      <div>
-        <span>Total: <span id="contactTotalCount">0</span></span>
-        <span>Recent: <span id="contactRecentCount">0</span></span>
-      </div>
-      <div id="contactMessagesContainer" class="cards-container"></div>
-      <div>
-        <input type="text" id="contactSearchInput" placeholder="Search messages...">
-        <button id="contactFilterButton">Filter</button>
-      </div>
-    </section>
-  </main>
-</body>
+    <main>
+      <section>
+        <div>
+          <span>Total: <span id="contactTotalCount">0</span></span>
+          <span>Recent: <span id="contactRecentCount">0</span></span>
+        </div>
+        <div id="contactMessagesContainer" class="cards-container">
+          No contact-message found
+        </div>
+        <div>
+          <input
+            type="text"
+            id="contactSearchInput"
+            placeholder="Search messages..."
+          />
+          <button id="contactFilterButton">Filter</button>
+        </div>
+      </section>
+    </main>
+  </body>
 </html>
