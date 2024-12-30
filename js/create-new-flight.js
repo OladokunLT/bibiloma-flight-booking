@@ -37,6 +37,7 @@ document
       airline: document.getElementById("airline").value,
       departure_date: departureDate,
       return_date: returnDate,
+      is_hidden: false,
     };
 
     // Validate data
@@ -67,7 +68,7 @@ document
     }
 
     try {
-      const response = await fetch(`${BASE_API_URL}/api/flight/package/`, {
+      const response = await fetch(`${BASE_API_URL}/flight/package/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

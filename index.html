@@ -176,8 +176,8 @@
         const data = Object.fromEntries(formData.entries());
         submitBtn.textContent = "Loading...";
         const endpoint = !isLoginMode
-          ? "/api/admin/login/"
-          : "/api/admin/register";
+          ? "/admin/login/"
+          : "/admin/register";
 
         try {
           const response = await fetch(`${BASE_API_URL}${endpoint}`, {

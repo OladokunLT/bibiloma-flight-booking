@@ -1,7 +1,7 @@
-// Ensure the DOM is fully loaded before executing
+const BASE_API_URL = "https://bibilomo-project.onrender.com";
 
+// Ensure the DOM is fully loaded before executing
 document.addEventListener("DOMContentLoaded", async () => {
-  const BASE_API_URL = "https://bibilomo-project.onrender.com";
   const flightPackagesContainer = document.getElementById("flightPackages");
   const packageTotalCount = document.querySelectorAll("#packageTotalCount");
   console.log(packageTotalCount);
@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Fetch all flight packages
   try {
-    const response = await fetch(`${BASE_API_URL}/api/flight/packages`, {
+    const response = await fetch(`${BASE_API_URL}/flight/package/list`, {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
 
@@ -59,9 +59,9 @@ document.addEventListener("DOMContentLoaded", async () => {
           <button class="btn-edit" onclick="editPackage(${
             pkg.id
           })">Edit</button>
-          <button class="btn-delete" onclick="deletePackage(${
+          <button class="btn-delete" onclick="archivePackage(${
             pkg.id
-          })">Delete</button>
+          })">Archive</button>
         </article>
       `;
       flightPackagesContainer.appendChild(card);
@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // fetch package count
     const packageCountResponse = await fetch(
-      `${BASE_API_URL}/api/flight/packages/count/`,
+      `${BASE_API_URL}/flight/packages/count/`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -90,30 +90,26 @@ document.addEventListener("DOMContentLoaded", async () => {
       element.textContent = recent_count;
     });
   } catch (error) {
-    console.log("Error", error);
+    console.error(error);
   }
-
-  // catch (error) {
-  //   console.log(error);
-  // }
 });
 
-// Delete package functionality
-async function deletePackage(id) {
-  const BASE_API_URL = "https://bibilomo-project.onrender.com";
+// Archive package functionality
+async function archivePackage(id) {
+  
   const accessToken = localStorage.getItem("access_token");
   const confirmation = confirm("Are you sure you want to delete this package?");
 
   if (!confirmation) return;
 
   try {
-    const response = await fetch(`${BASE_API_URL}/api/flight/packages/${id}/`, {
+    const response = await fetch(`${BASE_API_URL}/flight/package/archive/${id}/`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${accessToken}` },
     });
 
     if (response.ok) {
-      alert("Package deleted successfully!");
+      alert("Package archived successfully!");
       location.reload(); // Reload the page
     } else {
       const error = await response.json();
@@ -130,11 +126,11 @@ const closeModal = document.getElementById("closeModal");
 const editPackageForm = document.getElementById("editPackageForm");
 
 async function editPackage(id) {
-  const BASE_API_URL = "https://bibilomo-project.onrender.com";
+  
   const accessToken = localStorage.getItem("access_token");
 
   try {
-    const response = await fetch(`${BASE_API_URL}/api/flight/packages/${id}/`, {
+    const response = await fetch(`${BASE_API_URL}/flight/package/list/${id}/`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -145,6 +141,7 @@ async function editPackage(id) {
     }
 
     const packageDetails = await response.json();
+    console.log("after target package: ",packageDetails)
 
     // Populate the form fields
     document.getElementById("editName").value = packageDetails.name;
@@ -165,13 +162,14 @@ async function editPackage(id) {
       ? new Date(packageDetails.return_date).toISOString().split("T")[0]
       : "";
     document.getElementById("editPrice").value = packageDetails.price;
-
+    
+    console.log("before show modal")
     // Show the modal
     editModal.style.display = "block";
 
     editPackageForm.onsubmit = async function (e) {
       e.preventDefault();
-
+      console.log("inside editPackageForm onSubmit")
       // Collect updated data
       const updatedData = {
         name: document.getElementById("editName").value,
@@ -183,11 +181,13 @@ async function editPackage(id) {
         departure_date: document.getElementById("editDepartureDate").value,
         return_date: document.getElementById("editReturnDate").value || null,
         price: parseFloat(document.getElementById("editPrice").value),
+        is_hidden: false,
       };
 
+      
       try {
         const updateResponse = await fetch(
-          `${BASE_API_URL}/api/flight/packages/${id}/`,
+          `${BASE_API_URL}/flight/package/${id}/`,
           {
             method: "PUT",
             headers: {
@@ -211,6 +211,7 @@ async function editPackage(id) {
       }
     };
   } catch (err) {
+    console.log("failed to updatepackage")
     alert(`Error: ${err.message}`);
   }
 }
@@ -226,19 +227,6 @@ window.onclick = (event) => {
   }
 };
 
-// // Logout functionality
-// document.querySelectorAll("#logout-link").forEach((element) => {
-//   element.addEventListener("click", (event) => {
-//     event.preventDefault();
-
-//     // Clear tokens from localStorage
-//     localStorage.removeItem(access_token);
-//     localStorage.removeItem(refresh_token);
-
-//     // Redirect to login
-//     window.location.href = "index.html";
-//   });
-// });
 // Enhanced Logout Functionality
 document.querySelectorAll("#logout-link").forEach((element) => {
   element.addEventListener("click", (event) => {
