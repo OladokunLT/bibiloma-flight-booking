@@ -1,6 +1,6 @@
 // booking-applications.js
 document.addEventListener("DOMContentLoaded", async () => {
-  const BASE_API_URL = "https://bibilomo-project.onrender.com";
+  const BASE_API_URL = "https://api.bibilomotravels.com.ng";
   const accessToken = localStorage.getItem("access_token");
 
   const bookingTotalCount = document.querySelectorAll("#bookingTotalCount");
@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 async function deleteApplication(id) {
-  const BASE_API_URL = "https://bibilomo-project.onrender.com";
+  const BASE_API_URL = "https://api.bibilomotravels.com.ng";
   const accessToken = localStorage.getItem("access_token");
 
   try {

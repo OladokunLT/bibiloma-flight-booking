@@ -1,4 +1,4 @@
-const BASE_API_URL = "https://bibilomo-project.onrender.com";
+const BASE_API_URL = "https://api.bibilomotravels.com.ng";
 
 // Ensure the DOM is fully loaded before executing
 document.addEventListener("DOMContentLoaded", async () => {
@@ -25,7 +25,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     const packages = await response.json();
-    console.log(packages);
 
     if (packages.length === 0) {
       flightPackagesContainer.innerHTML =
@@ -79,12 +78,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!response.ok) {
       throw new Error("Failed to fetch package count");
     }
-    const { total_count, recent_count } = await packageCountResponse.json();
-    console.log(total_count);
+    const { total_active_count, recent_count } =
+      await packageCountResponse.json();
+    console.log(total_active_count);
     console.log(recent_count);
 
     packageTotalCount.forEach((element) => {
-      element.textContent = total_count;
+      element.textContent = total_active_count;
     });
     packageRecentCount.forEach((element) => {
       element.textContent = recent_count;
@@ -96,17 +96,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 // Archive package functionality
 async function archivePackage(id) {
-  
   const accessToken = localStorage.getItem("access_token");
   const confirmation = confirm("Are you sure you want to delete this package?");
 
   if (!confirmation) return;
 
   try {
-    const response = await fetch(`${BASE_API_URL}/flight/package/archive/${id}/`, {
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${accessToken}` },
-    });
+    const response = await fetch(
+      `${BASE_API_URL}/flight/package/archive/${id}/`,
+      {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${accessToken}` },
+      }
+    );
 
     if (response.ok) {
       alert("Package archived successfully!");
@@ -126,7 +128,6 @@ const closeModal = document.getElementById("closeModal");
 const editPackageForm = document.getElementById("editPackageForm");
 
 async function editPackage(id) {
-  
   const accessToken = localStorage.getItem("access_token");
 
   try {
@@ -141,7 +142,6 @@ async function editPackage(id) {
     }
 
     const packageDetails = await response.json();
-    console.log("after target package: ",packageDetails)
 
     // Populate the form fields
     document.getElementById("editName").value = packageDetails.name;
@@ -162,14 +162,12 @@ async function editPackage(id) {
       ? new Date(packageDetails.return_date).toISOString().split("T")[0]
       : "";
     document.getElementById("editPrice").value = packageDetails.price;
-    
-    console.log("before show modal")
+
     // Show the modal
     editModal.style.display = "block";
 
     editPackageForm.onsubmit = async function (e) {
       e.preventDefault();
-      console.log("inside editPackageForm onSubmit")
       // Collect updated data
       const updatedData = {
         name: document.getElementById("editName").value,
@@ -184,7 +182,6 @@ async function editPackage(id) {
         is_hidden: false,
       };
 
-      
       try {
         const updateResponse = await fetch(
           `${BASE_API_URL}/flight/package/${id}/`,
@@ -211,7 +208,7 @@ async function editPackage(id) {
       }
     };
   } catch (err) {
-    console.log("failed to updatepackage")
+    console.log("failed to updatepackage");
     alert(`Error: ${err.message}`);
   }
 }
@@ -231,23 +228,10 @@ window.onclick = (event) => {
 document.querySelectorAll("#logout-link").forEach((element) => {
   element.addEventListener("click", (event) => {
     event.preventDefault();
-
-    console.log("Logout initiated");
-
     try {
       // Clear tokens from localStorage
       localStorage.removeItem("access_token");
       localStorage.removeItem("refresh_token");
-
-      // Verify tokens removed
-      console.log(
-        "Access Token After Logout:",
-        localStorage.getItem("access_token")
-      );
-      console.log(
-        "Refresh Token After Logout:",
-        localStorage.getItem("refresh_token")
-      );
 
       // Redirect to login
       window.location.href = "index.html";

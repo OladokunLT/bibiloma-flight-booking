@@ -113,7 +113,7 @@
     </div>
 
     <script>
-      const BASE_API_URL = "https://bibilomo-project.onrender.com";
+      const BASE_API_URL = "https://api.bibilomotravels.com.ng";
       const formContainer = document.getElementById("form-container");
       const authForm = document.getElementById("auth-form");
       const formTitle = document.getElementById("form-title");
@@ -175,9 +175,7 @@
         const formData = new FormData(authForm);
         const data = Object.fromEntries(formData.entries());
         submitBtn.textContent = "Loading...";
-        const endpoint = !isLoginMode
-          ? "/admin/login/"
-          : "/admin/register";
+        const endpoint = !isLoginMode ? "/admin/login/" : "/admin/register";
 
         try {
           const response = await fetch(`${BASE_API_URL}${endpoint}`, {

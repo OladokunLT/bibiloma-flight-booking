@@ -6,7 +6,7 @@ document
   .getElementById("bookingForm")
   .addEventListener("submit", async function (e) {
     e.preventDefault();
-    const BASE_API_URL = "https://bibilomo-project.onrender.com";
+    const BASE_API_URL = "https://api.bibilomotravels.com.ng";
 
     // Format dates to YYYY-MM-DD
     const departureDate = new Date(
