@@ -3,117 +3,158 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./css/create-new-flight.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+      body {
+        background-image: url('./images/bg.jpg');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        color: white;
+      }
+      .container {
+        background-color: rgba(0, 0, 0, 0.7); /* Add transparency */
+        border-radius: 8px;
+        padding: 20px;
+      }
+      h2 {
+        color: #ffd700; /* Gold color for headings */
+      }
+      .btn {
+        font-weight: bold;
+      }
+      label {
+        font-weight: 600;
+      }
+    </style>
     <title>Create Flight Package</title>
   </head>
   <body>
-    <div class="booking-container">
-      <header>
-        <button id="goToDashboard" class="btn">Back to Dashboard</button>
+    <div class="container my-5">
+      <header class="mb-4">
+        <button id="goToDashboard" class="btn btn-secondary">Back to Dashboard</button>
       </header>
-      <h2>Create Flight Package</h2>
-      <form id="bookingForm">
-        <div class="form-group">
-          <label for="imageUpload">Upload Package Image:</label>
-          <input type="file" id="imageUpload" accept="image/*" />
-          <div class="image-preview" id="imagePreview">
-            <p>Preview will appear here</p>
+      <h2 class="mb-4">Create Flight Package</h2>
+      <form id="bookingForm" class="needs-validation" novalidate>
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="imageUpload" class="form-label">Upload Package Image:</label>
+            <input type="file" id="imageUpload" accept="image/*" class="form-control" />
+            <div class="image-preview mt-2" id="imagePreview">
+              <p>Preview will appear here</p>
+            </div>
           </div>
         </div>
-        <div class="form-group">
-          <label>Flight Mode:</label>
-          <div>
-            <input type="radio" id="oneWay" name="flightMode" value="one_way" />
-            <label for="oneWay">One-way</label>
+
+        <div class="mb-3">
+          <label class="form-label">Flight Mode:</label>
+          <div class="form-check form-check-inline">
+            <input type="radio" id="oneWay" name="flightMode" value="one_way" class="form-check-input" />
+            <label for="oneWay" class="form-check-label">One-way</label>
           </div>
-          <div>
+          <div class="form-check form-check-inline">
+            <input type="radio" id="roundTrip" name="flightMode" value="round_trip" class="form-check-input" />
+            <label for="roundTrip" class="form-check-label">Round-trip</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input type="radio" id="multiCity" name="flightMode" value="multi_city" class="form-check-input" />
+            <label for="multiCity" class="form-check-label">Multi-city</label>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="flightClass" class="form-label">Flight Class:</label>
+            <select id="flightClass" name="flightClass" class="form-select">
+              <option value="economy">Economy</option>
+              <option value="business">Business</option>
+              <option value="first_class">First Class</option>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label for="nameOfPackage" class="form-label">Name of Package:</label>
             <input
-              type="radio"
-              id="roundTrip"
-              name="flightMode"
-              value="round_trip"
+              type="text"
+              id="nameOfPackage"
+              name="nameOfPackage"
+              class="form-control"
+              placeholder="e.g., Vacation Package"
+              required
             />
-            <label for="roundTrip">Round-trip</label>
           </div>
-          <div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="airline" class="form-label">Airline:</label>
             <input
-              type="radio"
-              id="multiCity"
-              name="flightMode"
-              value="multi_city"
+              type="text"
+              id="airline"
+              name="airline"
+              class="form-control"
+              placeholder="Enter airline name"
+              required
             />
-            <label for="multiCity">Multi-city</label>
+          </div>
+
+          <div class="col-md-6">
+            <label for="departure" class="form-label">Departure:</label>
+            <input
+              type="text"
+              id="departure"
+              name="departure"
+              class="form-control"
+              placeholder="Enter departure city"
+              required
+            />
           </div>
         </div>
-        <div class="form-group">
-          <label for="flightClass">Flight Class:</label>
-          <select id="flightClass" name="flightClass">
-            <option value="economy">economy</option>
-            <option value="business">business</option>
-            <option value="first_class">first Class</option>
-          </select>
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="destination" class="form-label">Destination:</label>
+            <input
+              type="text"
+              id="destination"
+              name="destination"
+              class="form-control"
+              placeholder="Enter destination city"
+              required
+            />
+          </div>
+
+          <div class="col-md-6">
+            <label for="departureDate" class="form-label">Departure Date:</label>
+            <input type="date" id="departureDate" name="departureDate" class="form-control" required />
+          </div>
         </div>
-        <div class="form-group">
-          <label for="nameOfPackage">Name of Package:</label>
-          <input
-            type="text"
-            id="nameOfPackage"
-            name="nameOfPackage"
-            placeholder="e.g., Vacation Package"
-            required
-          />
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="returnDate" class="form-label">Return Date (optional):</label>
+            <input type="date" id="returnDate" name="returnDate" class="form-control" />
+          </div>
+
+          <div class="col-md-6">
+            <label for="price" class="form-label">Price:</label>
+            <input
+              type="text"
+              id="price"
+              name="price"
+              class="form-control"
+              placeholder="Enter price"
+              required
+            />
+          </div>
         </div>
-        <div class="form-group">
-          <label for="airline">Airline:</label>
-          <input
-            type="text"
-            id="airline"
-            name="airline"
-            placeholder="Enter airline name"
-            required
-          />
-        </div>
-        <div class="form-group">
-          <label for="departure">Departure:</label>
-          <input
-            type="text"
-            id="departure"
-            name="departure"
-            placeholder="Enter departure city"
-            required
-          />
-        </div>
-        <div class="form-group">
-          <label for="destination">Destination:</label>
-          <input
-            type="text"
-            id="destination"
-            name="destination"
-            placeholder="Enter destination city"
-            required
-          />
-        </div>
-        <div class="form-group">
-          <label for="departureDate">Departure Date:</label>
-          <input type="date" id="departureDate" name="departureDate" required />
-        </div>
-        <div class="form-group">
-          <label for="returnDate">Return Date (optional):</label>
-          <input type="date" id="returnDate" name="returnDate" />
-        </div>
-        <div class="form-group">
-          <label for="price">Price:</label>
-          <input
-            type="text"
-            id="price"
-            name="price"
-            placeholder="Enter price"
-            required
-          />
-        </div>
-        <button type="submit">Create Flight</button>
+
+        <button type="submit" class="btn btn-primary">Create Flight</button>
       </form>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
     <script src="js/create-new-flight.js"></script>
   </body>
 </html>

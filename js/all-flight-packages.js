@@ -1,134 +1,170 @@
 const BASE_API_URL = "https://api.bibilomotravels.com.ng";
+const accessToken = localStorage.getItem("access_token");
+const editModalElement = document.getElementById("editPackageModal");
+const editPackageForm = document.getElementById("editPackageForm");
+const editModal = new bootstrap.Modal(editModalElement); // Bootstrap modal instance
 
-// Ensure the DOM is fully loaded before executing
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", () => {
   const flightPackagesContainer = document.getElementById("flightPackages");
   const packageTotalCount = document.querySelectorAll("#packageTotalCount");
-  console.log(packageTotalCount);
   const packageRecentCount = document.querySelectorAll("#packageRecentCount");
-  const accessToken = localStorage.getItem("access_token");
+  const toggleViewBtn = document.getElementById("toggleViewBtn");
+  let isArchivedView = false; // Tracks current view
 
-  // Protect dashboard and this page
+  // Redirect if not authorized
   if (!accessToken) {
     alert("You are not authorized to access this page.");
-    window.location.href = "index.html"; // Redirect to login
+    window.location.href = "index.html"; 
   }
 
-  // Fetch all flight packages
-  try {
-    const response = await fetch(`${BASE_API_URL}/flight/package/list`, {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    });
+  // Load initial active packages
+  loadPackages();
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch flight packages");
-    }
+  // Event listener for toggle view
+  toggleViewBtn.addEventListener("click", () => {
+    isArchivedView = !isArchivedView;
+    toggleViewBtn.textContent = isArchivedView
+      ? "View Active Packages"
+      : "View Archived Packages";
+    loadPackages();
+  });
 
-    const packages = await response.json();
+  // Fetch and display packages
+  async function loadPackages() {
+    flightPackagesContainer.innerHTML = "<p>Loading...</p>";
+    const endpoint = isArchivedView
+      ? `${BASE_API_URL}/flight/package/archive/archived_list/`
+      : `${BASE_API_URL}/flight/package/list`;
+    try {
+      const response = await fetch(endpoint, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
 
-    if (packages.length === 0) {
-      flightPackagesContainer.innerHTML =
-        "<p>No flight packages available at the moment.</p>";
-      return;
-    }
-
-    packages.forEach((pkg) => {
-      const card = document.createElement("div");
-      card.className = "package-card";
-      card.innerHTML = `
-        <figure>
-          <img src="${pkg.image || "placeholder.jpg"}" alt="${pkg.name}" />
-        </figure>
-        <article>
-          <h3>${pkg.name}</h3>
-          <p><strong>Flight Mode:</strong> ${pkg.flight_mode || "N/A"}</p>
-          <p><strong>Class:</strong> ${pkg.flight_class || "N/A"}</p>
-          <p><strong>Airline:</strong> ${pkg.airline}</p>
-          <p><strong>Origin:</strong> ${pkg.origin}</p>
-          <p><strong>Destination:</strong> ${pkg.destination}</p>
-          <p><strong>Departure:</strong> ${new Date(
-            pkg.departure_date
-          ).toDateString()}</p>
-          <p><strong>Return:</strong> ${
-            pkg.return_date
-              ? new Date(pkg.return_date).toDateString()
-              : "One-way"
-          }</p>
-          <p class="price"><strong>Price:</strong> $${pkg.price}</p>
-          <button class="btn-edit" onclick="editPackage(${
-            pkg.id
-          })">Edit</button>
-          <button class="btn-delete" onclick="archivePackage(${
-            pkg.id
-          })">Archive</button>
-        </article>
-      `;
-      flightPackagesContainer.appendChild(card);
-    });
-
-    // fetch package count
-    const packageCountResponse = await fetch(
-      `${BASE_API_URL}/flight/packages/count/`,
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
+      if (!response.ok) {
+        throw new Error("Failed to fetch packages");
       }
-    );
-    if (!response.ok) {
-      throw new Error("Failed to fetch package count");
-    }
-    const { total_active_count, recent_count } =
-      await packageCountResponse.json();
-    console.log(total_active_count);
-    console.log(recent_count);
 
-    packageTotalCount.forEach((element) => {
-      element.textContent = total_active_count;
-    });
-    packageRecentCount.forEach((element) => {
-      element.textContent = recent_count;
-    });
-  } catch (error) {
-    console.error(error);
+      const result = await response.json();
+      const packages = isArchivedView ? result.data : result;
+
+      flightPackagesContainer.innerHTML = "";
+
+      if (packages.length === 0) {
+        flightPackagesContainer.innerHTML =
+          `<p>No ${isArchivedView ? "archived" : "active"} packages available at the moment.</p>`;
+        return;
+      }
+
+      packages.forEach((pkg) => {
+        const card = document.createElement("div");
+        card.className = "package-card";
+        card.innerHTML = `
+          <figure>
+            <img src="${pkg.placeholder_image || "placeholder.jpg"}" alt="${pkg.name}" />
+          </figure>
+          <article>
+            <h3>${pkg.name}</h3>
+            <p><strong>Flight Mode:</strong> ${pkg.flight_mode || "N/A"}</p>
+            <p><strong>Class:</strong> ${pkg.flight_class || "N/A"}</p>
+            <p><strong>Airline:</strong> ${pkg.airline}</p>
+            <p><strong>Origin:</strong> ${pkg.origin}</p>
+            <p><strong>Destination:</strong> ${pkg.destination}</p>
+            <p><strong>Departure:</strong> ${new Date(pkg.departure_date).toDateString()}</p>
+            <p><strong>Return:</strong> ${
+              pkg.return_date
+                ? new Date(pkg.return_date).toDateString()
+                : "One-way"
+            }</p>
+            <p class="price"><strong>Price:</strong> $${pkg.price}</p>
+            <button class="btn btn-primary" style="display: ${isArchivedView ? 'none' : 'inline-block'}" onclick="editPackage(${pkg.id})">Edit</button>
+            <button class=" btn btn-${isArchivedView ? "warning" : "danger"}" onclick="${
+              isArchivedView ? `restorePackage(${pkg.id})` : `archivePackage(${pkg.id})`
+            }">${isArchivedView ? "Restore" : "Archive"}</button>
+          </article>
+        `;
+        flightPackagesContainer.appendChild(card);
+      });
+
+      // Update counts for active view
+      if (!isArchivedView) {
+        updatePackageCounts();
+      }
+    } catch (error) {
+      console.error(error);
+    }
   }
+
+  // Update package counts
+  async function updatePackageCounts() {
+    try {
+      const response = await fetch(`${BASE_API_URL}/flight/packages/count/`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch package count");
+      }
+
+      const { total_active_count, recent_count } = await response.json();
+      packageTotalCount.forEach((element) => {
+        element.textContent = total_active_count;
+      });
+      packageRecentCount.forEach((element) => {
+        element.textContent = recent_count;
+      });
+    } catch (error) {
+      console.error("Failed to update package counts:", error);
+    }
+  }
+
 });
 
-// Archive package functionality
-async function archivePackage(id) {
-  const accessToken = localStorage.getItem("access_token");
-  const confirmation = confirm("Are you sure you want to delete this package?");
+  // Archive package
+  async function archivePackage(id) {
+    if (!confirm("Are you sure you want to archive this package?")) return;
 
-  if (!confirmation) return;
-
-  try {
-    const response = await fetch(
-      `${BASE_API_URL}/flight/package/archive/${id}/`,
-      {
+    try {
+      const response = await fetch(`${BASE_API_URL}/flight/package/archive/${id}/`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${accessToken}` },
-      }
-    );
+      });
 
-    if (response.ok) {
-      alert("Package archived successfully!");
-      location.reload(); // Reload the page
-    } else {
-      const error = await response.json();
-      alert(`Error: ${error.message}`);
+      if (response.ok) {
+        alert("Package archived successfully!");
+        location.reload()
+      } else {
+        const error = await response.json();
+        alert(`Error: ${error.message}`);
+      }
+    } catch (error) {
+      alert(`Server error: ${error.message}`);
     }
-  } catch (err) {
-    alert(`Server error: ${err.message}`);
   }
-}
+
+  // Restore package
+  async function restorePackage(id) {
+    if (!confirm("Are you sure you want to restore this package?")) return;
+    try {
+      const response = await fetch(`${BASE_API_URL}/flight/package/archive/${id}/restore/`, {
+        method: "PATCH",
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+
+      if (response.ok) {
+        alert("Package restored successfully!");
+        location.reload()
+      } else {
+        const error = await response.json();
+        alert(`Error: ${error.message}`);
+      }
+    } catch (error) {
+      alert(`Server error: ${error.message}`);
+    }
+  }
+
 
 // Edit package functionality
-const editModal = document.getElementById("editPackageModal");
-const closeModal = document.getElementById("closeModal");
-const editPackageForm = document.getElementById("editPackageForm");
-
 async function editPackage(id) {
-  const accessToken = localStorage.getItem("access_token");
 
   try {
     const response = await fetch(`${BASE_API_URL}/flight/package/list/${id}/`, {
@@ -163,8 +199,9 @@ async function editPackage(id) {
       : "";
     document.getElementById("editPrice").value = packageDetails.price;
 
-    // Show the modal
-    editModal.style.display = "block";
+    // Show the modal using Bootstrap API
+    editModal.show();
+
 
     editPackageForm.onsubmit = async function (e) {
       e.preventDefault();
@@ -197,7 +234,7 @@ async function editPackage(id) {
 
         if (updateResponse.ok) {
           alert("Package updated successfully!");
-          editModal.style.display = "none";
+          editModal.hide(); // Close the modal using Bootstrap API
           location.reload();
         } else {
           const error = await updateResponse.json();
@@ -213,30 +250,12 @@ async function editPackage(id) {
   }
 }
 
-// Close modal handlers
-closeModal.onclick = () => {
-  editModal.style.display = "none";
-};
-
-window.onclick = (event) => {
-  if (event.target === editModal) {
-    editModal.style.display = "none";
-  }
-};
-
-// Enhanced Logout Functionality
-document.querySelectorAll("#logout-link").forEach((element) => {
+ // Logout functionality
+ document.querySelectorAll("#logout-link").forEach((element) => {
   element.addEventListener("click", (event) => {
     event.preventDefault();
-    try {
-      // Clear tokens from localStorage
-      localStorage.removeItem("access_token");
-      localStorage.removeItem("refresh_token");
-
-      // Redirect to login
-      window.location.href = "index.html";
-    } catch (error) {
-      console.error("Error during logout:", error);
-    }
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+    window.location.href = "index.html";
   });
 });
