@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   try {
     const countResponse = await fetch(
-      `${BASE_API_URL}/api/flight/contact-messages/count/`,
+      `${BASE_API_URL}/flight/contact-messages/count/`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -24,18 +24,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!countResponse.ok) {
       throw new Error("Failed to fetch contact message counts");
     }
-    const { total_count, recent_count } = await countResponse.json();
+    const { total_active_count, recent_count } = await countResponse.json();
     contactTotalCount.forEach((element) => {
-      element.textContent = total_count;
+      element.textContent = total_active_count;
     });
-    // contactTotalCount.textContent = total_count;
+    // contactTotalCount.textContent = total_active_count;
     contactRecentCount.forEach((element) => {
       element.textContent = recent_count;
     });
     // contactRecentCount.textContent = recent_count;
 
     const messagesResponse = await fetch(
-      `${BASE_API_URL}/api/flight/contact-messages/`,
+      `${BASE_API_URL}/flight/contact-message/check/`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -87,7 +87,7 @@ async function deleteMessage(id) {
 
   try {
     const response = await fetch(
-      `${BASE_API_URL}/api/flight/contact-messages/${id}/`,
+      `${BASE_API_URL}/flight/contact-message/archive/${id}/`,
       {
         method: "DELETE",
         headers: {

@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   try {
     const countResponse = await fetch(
-      `${BASE_API_URL}/api/flight/booking-applications/count/`,
+      `${BASE_API_URL}/flight/booking-applications/count/`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -25,16 +25,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!countResponse.ok) {
       throw new Error("Failed to fetch booking application counts");
     }
-    const { total_count, recent_count } = await countResponse.json();
+    const { total_active_count, recent_count } = await countResponse.json();
     bookingTotalCount.forEach((element) => {
-      element.textContent = total_count;
+      element.textContent = total_active_count;
     });
     bookingRecentCount.forEach((element) => {
       element.textContent = recent_count;
     });
 
     const applicationsResponse = await fetch(
-      `${BASE_API_URL}/api/flight/booking-applications/`,
+      `${BASE_API_URL}/flight/booking-application/list/`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -87,7 +87,7 @@ async function deleteApplication(id) {
 
   try {
     const response = await fetch(
-      `${BASE_API_URL}/api/flight/booking-applications/${id}/`,
+      `${BASE_API_URL}/flight/booking-application/archive/${id}/`,
       {
         method: "DELETE",
         headers: {
