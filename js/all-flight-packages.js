@@ -11,10 +11,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const toggleViewBtn = document.getElementById("toggleViewBtn");
   let isArchivedView = false; // Tracks current view
 
+  console.log(packageTotalCount);
   // Redirect if not authorized
   if (!accessToken) {
     alert("You are not authorized to access this page.");
-    window.location.href = "index.html"; 
+    window.location.href = "index.html";
   }
 
   // Load initial active packages
@@ -50,8 +51,9 @@ document.addEventListener("DOMContentLoaded", () => {
       flightPackagesContainer.innerHTML = "";
 
       if (packages.length === 0) {
-        flightPackagesContainer.innerHTML =
-          `<p>No ${isArchivedView ? "archived" : "active"} packages available at the moment.</p>`;
+        flightPackagesContainer.innerHTML = `<p>No ${
+          isArchivedView ? "archived" : "active"
+        } packages available at the moment.</p>`;
         return;
       }
 
@@ -60,7 +62,9 @@ document.addEventListener("DOMContentLoaded", () => {
         card.className = "package-card";
         card.innerHTML = `
           <figure>
-            <img src="${pkg.placeholder_image || "placeholder.jpg"}" alt="${pkg.name}" />
+            <img src="${pkg.placeholder_image || "placeholder.jpg"}" alt="${
+          pkg.name
+        }" />
           </figure>
           <article>
             <h3>${pkg.name}</h3>
@@ -69,17 +73,25 @@ document.addEventListener("DOMContentLoaded", () => {
             <p><strong>Airline:</strong> ${pkg.airline}</p>
             <p><strong>Origin:</strong> ${pkg.origin}</p>
             <p><strong>Destination:</strong> ${pkg.destination}</p>
-            <p><strong>Departure:</strong> ${new Date(pkg.departure_date).toDateString()}</p>
+            <p><strong>Departure:</strong> ${new Date(
+              pkg.departure_date
+            ).toDateString()}</p>
             <p><strong>Return:</strong> ${
               pkg.return_date
                 ? new Date(pkg.return_date).toDateString()
                 : "One-way"
             }</p>
-            <p class="price"><strong>Price:</strong> $${pkg.price}</p>
-            <button class="btn btn-primary" style="display: ${isArchivedView ? 'none' : 'inline-block'}" onclick="editPackage(${pkg.id})">Edit</button>
-            <button class=" btn btn-${isArchivedView ? "warning" : "danger"}" onclick="${
-              isArchivedView ? `restorePackage(${pkg.id})` : `archivePackage(${pkg.id})`
-            }">${isArchivedView ? "Restore" : "Archive"}</button>
+            <p class="price"><strong>Price:</strong> ₦${pkg.price}</p>
+            <button class="btn btn-primary" style="display: ${
+              isArchivedView ? "none" : "inline-block"
+            }" onclick="editPackage(${pkg.id})">Edit</button>
+            <button class=" btn btn-${
+              isArchivedView ? "warning" : "danger"
+            }" onclick="${
+          isArchivedView
+            ? `restorePackage(${pkg.id})`
+            : `archivePackage(${pkg.id})`
+        }">${isArchivedView ? "Restore" : "Archive"}</button>
           </article>
         `;
         flightPackagesContainer.appendChild(card);
@@ -116,56 +128,59 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error("Failed to update package counts:", error);
     }
   }
-
 });
 
-  // Archive package
-  async function archivePackage(id) {
-    if (!confirm("Are you sure you want to archive this package?")) return;
+// Archive package
+async function archivePackage(id) {
+  if (!confirm("Are you sure you want to archive this package?")) return;
 
-    try {
-      const response = await fetch(`${BASE_API_URL}/flight/package/archive/${id}/`, {
+  try {
+    const response = await fetch(
+      `${BASE_API_URL}/flight/package/archive/${id}/`,
+      {
         method: "DELETE",
         headers: { Authorization: `Bearer ${accessToken}` },
-      });
-
-      if (response.ok) {
-        alert("Package archived successfully!");
-        location.reload()
-      } else {
-        const error = await response.json();
-        alert(`Error: ${error.message}`);
       }
-    } catch (error) {
-      alert(`Server error: ${error.message}`);
-    }
-  }
+    );
 
-  // Restore package
-  async function restorePackage(id) {
-    if (!confirm("Are you sure you want to restore this package?")) return;
-    try {
-      const response = await fetch(`${BASE_API_URL}/flight/package/archive/${id}/restore/`, {
+    if (response.ok) {
+      alert("Package archived successfully!");
+      location.reload();
+    } else {
+      const error = await response.json();
+      alert(`Error: ${error.message}`);
+    }
+  } catch (error) {
+    alert(`Server error: ${error.message}`);
+  }
+}
+
+// Restore package
+async function restorePackage(id) {
+  if (!confirm("Are you sure you want to restore this package?")) return;
+  try {
+    const response = await fetch(
+      `${BASE_API_URL}/flight/package/archive/${id}/restore/`,
+      {
         method: "PATCH",
         headers: { Authorization: `Bearer ${accessToken}` },
-      });
-
-      if (response.ok) {
-        alert("Package restored successfully!");
-        location.reload()
-      } else {
-        const error = await response.json();
-        alert(`Error: ${error.message}`);
       }
-    } catch (error) {
-      alert(`Server error: ${error.message}`);
-    }
-  }
+    );
 
+    if (response.ok) {
+      alert("Package restored successfully!");
+      location.reload();
+    } else {
+      const error = await response.json();
+      alert(`Error: ${error.message}`);
+    }
+  } catch (error) {
+    alert(`Server error: ${error.message}`);
+  }
+}
 
 // Edit package functionality
 async function editPackage(id) {
-
   try {
     const response = await fetch(`${BASE_API_URL}/flight/package/list/${id}/`, {
       headers: {
@@ -201,7 +216,6 @@ async function editPackage(id) {
 
     // Show the modal using Bootstrap API
     editModal.show();
-
 
     editPackageForm.onsubmit = async function (e) {
       e.preventDefault();
@@ -250,8 +264,8 @@ async function editPackage(id) {
   }
 }
 
- // Logout functionality
- document.querySelectorAll("#logout-link").forEach((element) => {
+// Logout functionality
+document.querySelectorAll("#logout-link").forEach((element) => {
   element.addEventListener("click", (event) => {
     event.preventDefault();
     localStorage.removeItem("access_token");

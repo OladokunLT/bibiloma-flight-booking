@@ -29,6 +29,7 @@ section {
   display: flex;
   flex-wrap: wrap;
   gap: 15px;
+  margin-block: 32px;
 }
 
 .card {

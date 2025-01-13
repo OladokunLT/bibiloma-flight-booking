@@ -4,12 +4,17 @@ document.addEventListener("DOMContentLoaded", async () => {
   const accessToken = localStorage.getItem("access_token");
 
   const bookingTotalCount = document.querySelectorAll("#bookingTotalCount");
-  const bookingRecentCount = document.getElementById("#bookingRecentCount");
+  const bookingRecentCount = document.querySelectorAll("#bookingRecentCount");
   const bookingApplicationsContainer = document.getElementById(
     "bookingApplicationsContainer"
   );
   const bookingSearchInput = document.getElementById("bookingSearchInput");
   const bookingFilterButton = document.getElementById("bookingFilterButton");
+
+  if (!accessToken) {
+    window.location.href = "index.html";
+    alert("You don't have access to this page.");
+  }
 
   let applications = [];
 
@@ -67,17 +72,36 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function renderApplications(applications) {
     bookingApplicationsContainer.innerHTML = "";
-    applications.forEach(({ id, full_name, email, package: pkg }) => {
-      const card = document.createElement("div");
-      card.className = "card";
-      card.innerHTML = `
-        <h3>${full_name}</h3>
+    applications.forEach(
+      ({
+        id,
+        first_name,
+        last_name,
+        email,
+        phone_number,
+        package: pkg,
+        number_of_passengers,
+        gender,
+        nationality,
+      }) => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+        <p> <strong>Booking(passenger) ID: </strong> ${id} </p>
+        <p> <strong>Package ID: </strong> ${pkg} </p>
+        <p> <strong>FirstName: </strong> ${first_name} </p>
+        <p> <strong>FirstName: </strong> ${last_name} </p>
         <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Package:</strong> ${pkg?.name || "N/A"}</p>
-        <button onclick="deleteApplication(${id})">Delete</button>
+        <p><strong>Phone Number:</strong> ${phone_number}</p>
+        <p><strong>Number of Passenger:</strong> ${number_of_passengers}</p>
+        <p><strong>Gender:</strong> ${gender}</p>
+        <p><strong>Nationality:</strong> ${nationality}</p>
+
+        <button class="btn btn-danger" onclick="deleteApplication(${id})">Delete</button>
       `;
-      bookingApplicationsContainer.appendChild(card);
-    });
+        bookingApplicationsContainer.appendChild(card);
+      }
+    );
   }
 });
 

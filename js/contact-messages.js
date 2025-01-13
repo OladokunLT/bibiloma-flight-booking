@@ -10,6 +10,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   const contactSearchInput = document.getElementById("contactSearchInput");
   const contactFilterButton = document.getElementById("contactFilterButton");
 
+  if (!accessToken) {
+    alert("You don't have access to this page.");
+    window.location.href = "index.html";
+  }
+
   let messages = [];
 
   try {

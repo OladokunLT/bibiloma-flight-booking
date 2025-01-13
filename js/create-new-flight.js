@@ -1,3 +1,12 @@
+document.addEventListener("DOMContentLoaded", () => {
+  const accessToken = localStorage.getItem("access_token");
+
+  if (!accessToken) {
+    alert("You don't have access to this page.");
+    window.location.href = "index.html";
+  }
+});
+
 document.getElementById("goToDashboard").addEventListener("click", () => {
   window.location.href = "/admin-dashboard.html";
 });
