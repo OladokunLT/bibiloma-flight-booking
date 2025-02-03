@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 ? new Date(pkg.return_date).toDateString()
                 : "One-way"
             }</p>
-            <p class="price"><strong>Price:</strong> ₦${pkg.price}</p>
+            <p class="price"><strong>Price:</strong> $${pkg.price}</p>
             <button class="btn btn-primary" style="display: ${
               isArchivedView ? "none" : "inline-block"
             }" onclick="editPackage(${pkg.id})">Edit</button>

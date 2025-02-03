@@ -1,5 +1,94 @@
-<!-- booking-application.html -->
 <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Booking Applications</title>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Template CSS Files -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/select2.min.css" />
+    <link rel="stylesheet" href="css/line-awesome.css" />
+    <link rel="stylesheet" href="css/owl.carousel.min.css" />
+    <link rel="stylesheet" href="css/owl.theme.default.min.css" />
+    <link rel="stylesheet" href="css/jquery.fancybox.min.css" />
+    <link rel="stylesheet" href="css/daterangepicker.css" />
+    <link rel="stylesheet" href="css/animate.min.css" />
+    <link rel="stylesheet" href="css/animated-headline.css" />
+    <link rel="stylesheet" href="css/jquery-ui.css" />
+    <link rel="stylesheet" href="css/flag-icon.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header class="bg-dark text-white py-3">
+      <div class="container">
+        <h1 class="text-center">Booking Applications</h1>
+      </div>
+    </header>
+
+    <main class="container my-4">
+      <a href="/admin-dashboard.html" class="btn btn-secondary mb-3">Back to dashboard</a>
+      <section class="card p-3">
+        <div class="d-flex justify-content-between mb-3">
+          <span>Total: <span id="bookingTotalCount" class="badge bg-primary">0</span></span>
+          <span>Recent: <span id="bookingRecentCount" class="badge bg-success">0</span></span>
+        </div>
+        <div class="d-flex justify-content-between mb-3">
+          <button id="toggleArchived" class="btn btn-outline-secondary">Show Archived</button>
+          <div class="input-group w-50">
+            <input type="text" id="bookingSearchInput" class="form-control" placeholder="Search applications..." />
+            <button id="bookingFilterButton" class="btn btn-primary">Filter</button>
+          </div>
+        </div>
+        <div id="bookingApplicationsContainer" class="row row-cols-1 row-cols-md-3 g-4">
+          <div class="col">
+            <div class="card h-100">
+              <div class="card-body">
+                <p class="card-text">No booking applications found.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- loader -->
+        <div id="loader" class="text-center my-4">
+          <div class="preloader" id="preloader">
+            <div class="loader">
+              <svg class="spinner" viewBox="0 0 50 50">
+                <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+              </svg>
+            </div>
+          </div>
+        </div>
+        <!-- end loader -->
+        
+        
+        <!-- start scroll top -->
+    <div id="back-to-top">
+      <i class="la la-angle-up" title="Go top"></i>
+    </div>
+    <!-- end scroll top -->
+      </section>
+    </main>
+
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script src="js/jquery-ui.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/booking-applications.js"></script>
+  </body>
+</html>
+
+
+
+
+<!-- booking-application.html -->
+<!-- <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -7,6 +96,12 @@
     <title>Booking Applications</title>
     <link rel="stylesheet" href="css/booking-package.css" />
     <script defer src="js/booking-applications.js"></script>
+
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/animate.min.css" />
+    <link rel="stylesheet" href="css/jquery-ui.css" />
+    <link rel="stylesheet" href="css/flag-icon.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
     <header>
@@ -35,5 +130,12 @@
         </div>
       </section>
     </main>
+
+
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script src="js/jquery-ui.js"></script>
+
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
   </body>
-</html>
+</html> -->

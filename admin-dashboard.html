@@ -220,7 +220,7 @@
                           aria-expanded="false"
                         >
                           <i class="la la-bell"></i>
-                          <span class="noti-count" id="bookingTotalCount">4</span>
+                          <span class="noti-count" id="booking-noti-count">4</span>
                         </a>
                         <!-- <div
                           class="dropdown-menu dropdown-reveal dropdown-menu-xl dropdown-menu-right"
@@ -681,7 +681,7 @@
     <script src="js/jquery.countTo.min.js"></script>
     <script src="js/animated-headline.js"></script>
     <!-- <script src="js/jquery.sparkline.js"></script> -->
-    <!-- <script src="js/dashboard.js"></script> -->
+    <script src="js/dashboard.js"></script>
     <!-- <script src="js/chart.js"></script> -->
     <!-- <script src="js/chart.extension.js"></script> -->
     <!-- <script src="js/bar-chart.js"></script> -->
@@ -695,16 +695,16 @@
       
     document.addEventListener("DOMContentLoaded", () => {
       const packageTotalCount = document.getElementById("packageTotalCount");
-
+      
       // Redirect if not authorized
-    if (!accessToken) {
-      alert("You are not authorized to access this page.");
-      window.location.href = "index.html";
+      if (!accessToken) {
+        alert("You are not authorized to access this page.");
+        window.location.href = "index.html";
     }
-
-      async function updatePackageCounts() {
-        try {
-          const response = await fetch(`${BASE_API_URL}/flight/packages/count/`, {
+    
+    async function updatePackageCounts() {
+      try {
+        const response = await fetch(`${BASE_API_URL}/flight/packages/count/`, {
             headers: { Authorization: `Bearer ${accessToken}` },
           });
 
@@ -719,6 +719,7 @@
           } else {
             console.error("packageTotalCount element not found");
           }
+          
         } catch (error) {
           console.error("Failed to update package counts:", error);
         }
@@ -727,7 +728,46 @@
       // Call this function wherever appropriate in your code
       updatePackageCounts();
     });
+    
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const bookingTotalCount = document.getElementById("bookingTotalCount");
+        const bookingRecentCount = document.getElementById("bookingRecentCount");
+        const bookingNotiCount = document.getElementById("booking-noti-count");
+        // update booking counts
+        async function updateBookingCounts() {
+          try {
+            const response = await fetch(`${BASE_API_URL}/flight/booking-applications/count/`, {
+              headers: { Authorization: `Bearer ${accessToken}` },
+            });
 
+            if (!response.ok) {
+              throw new Error("Failed to fetch booking count");
+            }
+
+            const { total_active_count } = await response.json();
+
+            if (bookingTotalCount) {
+              bookingTotalCount.textContent = total_active_count;
+              bookingNotiCount.textContent = total_active_count;
+            } else {
+              console.error("bookingTotalCount element not found");
+            }
+
+            // if (bookingRecentCount) {
+            //   bookingRecentCount.textContent = recent_count;
+            // } else {
+            //   console.error("bookingRecentCount element not found");
+            // }
+          } catch (error) {
+            console.error("Failed to update booking counts:", error);
+          }
+        }
+
+        updateBookingCounts();
+        
+      });
     </script>
   </body>
 </html>
