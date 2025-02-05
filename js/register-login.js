@@ -79,8 +79,6 @@ authForm.addEventListener("submit", async (e) => {
     }
 
     const result = await response.json();
-    console.log("Success:", result);
-
     if (!isLoginMode) {
       // Store tokens securely
       localStorage.setItem("access_token", result.access_token);

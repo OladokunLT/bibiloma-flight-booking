@@ -11,7 +11,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const toggleViewBtn = document.getElementById("toggleViewBtn");
   let isArchivedView = false; // Tracks current view
 
-  console.log(packageTotalCount);
   // Redirect if not authorized
   if (!accessToken) {
     alert("You are not authorized to access this page.");

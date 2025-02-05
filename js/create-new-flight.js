@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.getElementById("goToDashboard").addEventListener("click", () => {
-  window.location.href = "/admin-dashboard.html";
+  window.location.href = "./admin-dashboard.html";
 });
 
 document

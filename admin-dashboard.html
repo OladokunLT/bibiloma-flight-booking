@@ -681,17 +681,75 @@
     <script src="js/jquery.countTo.min.js"></script>
     <script src="js/animated-headline.js"></script>
     <!-- <script src="js/jquery.sparkline.js"></script> -->
-    <script src="js/dashboard.js"></script>
+    <!-- <script src="js/dashboard.js"></script> -->
     <!-- <script src="js/chart.js"></script> -->
     <!-- <script src="js/chart.extension.js"></script> -->
     <!-- <script src="js/bar-chart.js"></script> -->
     <!-- <script src="js/line-chart.js"></script> -->
     <script src="js/jquery.ripples-min.js"></script>
-    <script src="js/contact-messages.js"></script>
-    <script src="js/booking-applications.js"></script>
+    <!-- <script src="js/booking-applications.js"></script> -->
     <script src="js/all-flight-packages.js"></script>
+    <!-- <script src="js/contact-messages.js"></script> -->
     <script src="js/main.js"></script>
     <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const BASE_API_URL = "https://api.bibilomotravels.com.ng";
+        const accessToken = localStorage.getItem("access_token");
+    
+        if (!accessToken) {
+          alert("You are not authorized to access this page.");
+          window.location.href = "index.html";
+          return;
+        }
+    
+        const packageTotalCount = document.getElementById("packageTotalCount");
+        const bookingTotalCount = document.getElementById("bookingTotalCount");
+        const contactTotalCount = document.getElementById("contactTotalCount");
+        const contactRecentCount = document.getElementById("contactRecentCount");
+    
+        async function fetchAndUpdateCount(url, element, errorMessage) {
+          try {
+            const response = await fetch(url, {
+              headers: { Authorization: `Bearer ${accessToken}` },
+            });
+    
+            if (!response.ok) {
+              throw new Error(errorMessage);
+            }
+    
+            const { total_active_count } = await response.json();
+    
+            if (element) {
+              element.textContent = total_active_count;
+            } else {
+              console.error(`${errorMessage}: Element not found`);
+            }
+          } catch (error) {
+            console.error(errorMessage, error);
+          }
+        }
+    
+        fetchAndUpdateCount(
+          `${BASE_API_URL}/flight/packages/count/`,
+          packageTotalCount,
+          "Failed to fetch package count"
+        );
+
+        fetchAndUpdateCount(
+          `${BASE_API_URL}/flight/booking-applications/count/`,
+          bookingTotalCount,
+          "Failed to fetch package count"
+        );
+    
+        fetchAndUpdateCount(
+          `${BASE_API_URL}/flight/contact-messages/count/`,
+          contactTotalCount,
+          "Failed to fetch contact count"
+        );
+      });
+    </script>
+    
+    <!-- <script>
       
     document.addEventListener("DOMContentLoaded", () => {
       const packageTotalCount = document.getElementById("packageTotalCount");
@@ -732,42 +790,37 @@
     </script>
     <script>
       document.addEventListener("DOMContentLoaded", () => {
-        const bookingTotalCount = document.getElementById("bookingTotalCount");
-        const bookingRecentCount = document.getElementById("bookingRecentCount");
-        const bookingNotiCount = document.getElementById("booking-noti-count");
-        // update booking counts
-        async function updateBookingCounts() {
+        const contactTotalCount = document.getElementById("contactTotalCount");
+        const contactRecentCount = document.getElementById("contactRecentCount");
+        // const contactNotiCount = document.getElementById("contact-noti-count");
+        // update contact counts
+        async function updateContactCounts() {
           try {
-            const response = await fetch(`${BASE_API_URL}/flight/booking-applications/count/`, {
+            const response = await fetch(`${BASE_API_URL}/flight/contact-messages/count/`, {
               headers: { Authorization: `Bearer ${accessToken}` },
             });
 
             if (!response.ok) {
-              throw new Error("Failed to fetch booking count");
+              throw new Error("Failed to fetch contact count");
             }
 
             const { total_active_count } = await response.json();
 
-            if (bookingTotalCount) {
-              bookingTotalCount.textContent = total_active_count;
-              bookingNotiCount.textContent = total_active_count;
+            if (contactTotalCount) {
+              contactTotalCount.textContent = total_active_count;
             } else {
-              console.error("bookingTotalCount element not found");
+              console.error("contactTotalCount element not found");
             }
 
-            // if (bookingRecentCount) {
-            //   bookingRecentCount.textContent = recent_count;
-            // } else {
-            //   console.error("bookingRecentCount element not found");
-            // }
+
           } catch (error) {
-            console.error("Failed to update booking counts:", error);
+            console.error("Failed to update contact counts:", error);
           }
         }
 
-        updateBookingCounts();
+        updateContactCounts();
         
       });
-    </script>
+    </script> -->
   </body>
 </html>
